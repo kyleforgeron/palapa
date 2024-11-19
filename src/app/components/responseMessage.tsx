@@ -31,11 +31,7 @@ const ResponseMessage = ({ variant }: { variant: string }) => {
     selectedPalapa,
     variant,
   ]);
-  return (
-    <div className="flex flex-col w-full max-w-5xl">
-      <div className="flex w-full text-green-600">{message()}</div>
-    </div>
-  );
+  return <div className="flex w-full">{message()}</div>;
 };
 
 export default ResponseMessage;

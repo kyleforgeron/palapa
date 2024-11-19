@@ -36,13 +36,13 @@ const Button = ({ variant }: { variant: string }) => {
         body: JSON.stringify({ id: palapaIdMap[selectedPalapa.name] }),
       }).then((res) =>
         res.json().then((data) => {
-          console.log(data, data.booking, data.message);
+          console.log(data, data.booking, data.message, data.anonymous_id);
           setBookItemResponse(
             !!data.booking
               ? `${selectedPalapa.name} successfully added to cart.`
               : data.message
           );
-          setAnonymousId(data.anonymous_id ?? "");
+          if (data.anonymous_id) setAnonymousId(data.anonymous_id);
         })
       );
     } catch {
@@ -122,7 +122,7 @@ const Button = ({ variant }: { variant: string }) => {
     } catch {
       (error: Error) => console.log(error);
     }
-  }, [selectedPalapa, setBookFromCartResponse, watch]);
+  }, [anonymousId, selectedPalapa, setBookFromCartResponse, watch]);
   switch (variant) {
     case "getItems":
       return (

@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { AppContext, AppContextType } from "../contexts/appContext";
 
 const UserInfo = () => {
-  const { handleSubmit, errors, register } = useContext(
+  const { handleSubmit, isSubmitted, errors, register } = useContext(
     AppContext
   ) as AppContextType;
   const onFormSubmit = handleSubmit((data) => console.log(data));
@@ -84,14 +84,16 @@ const UserInfo = () => {
           </span>
         )}
       </div>
-      <div className="flex-shrink-0 flex-grow-0 mt-1 lg:mt-8">
-        <button
-          type="submit"
-          className="bg-blue-800 text-white border border-blue-800 hover:bg-white hover:text-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
-        >
-          Submit
-        </button>
-      </div>
+      {!isSubmitted && (
+        <div className="flex-shrink-0 flex-grow-0 mt-1 lg:mt-8">
+          <button
+            type="submit"
+            className="bg-blue-800 text-white border border-blue-800 hover:bg-white hover:text-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
+          >
+            Submit
+          </button>
+        </div>
+      )}
     </form>
   );
 };

@@ -39,8 +39,8 @@ export interface AppContextType {
   palapaIdMap: {
     [key: string]: string;
   };
-  selectedPalapa?: PalapaListing;
-  setSelectedPalapa: (arg0: PalapaListing) => void;
+  selectedPalapa: PalapaListing | null;
+  setSelectedPalapa: (arg0: PalapaListing | null) => void;
   bookItemResponse: string | null;
   setBookItemResponse: (arg0: string | null) => void;
   checkCartResponse: string | null;
@@ -63,9 +63,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [anonymousId, setAnonymousId] = useState<string>("");
   const [palapas, setPalapas] = useState<PalapaListing[]>([]);
-  const [selectedPalapa, setSelectedPalapa] = useState<
-    PalapaListing | undefined
-  >();
+  const [selectedPalapa, setSelectedPalapa] = useState<PalapaListing | null>(
+    null
+  );
   const [bookItemResponse, setBookItemResponse] = useState<string | null>("");
   const [checkCartResponse, setCheckCartResponse] = useState<string | null>("");
   const [checkFieldsResponse, setCheckFieldsResponse] = useState<string | null>(
