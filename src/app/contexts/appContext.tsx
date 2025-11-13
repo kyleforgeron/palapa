@@ -3,8 +3,12 @@ import React, { useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import type {
   FieldErrors,
+  UseFormClearErrors,
   UseFormHandleSubmit,
   UseFormRegister,
+  UseFormReset,
+  UseFormResetField,
+  UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
 
@@ -34,6 +38,8 @@ export type UserInfo = {
 export interface AppContextType {
   anonymousId: string;
   setAnonymousId: (arg0: string) => void;
+  loading: number;
+  setLoading: (arg0: number) => void;
   palapas: PalapaListing[];
   setPalapas: (arg0: PalapaListing[]) => void;
   palapaIdMap: {
@@ -52,7 +58,11 @@ export interface AppContextType {
   isSubmitted: boolean;
   handleSubmit: UseFormHandleSubmit<UserInfo, undefined>;
   errors: FieldErrors<UserInfo>;
+  clearErrors: UseFormClearErrors<UserInfo>;
   register: UseFormRegister<UserInfo>;
+  reset: UseFormReset<UserInfo>;
+  resetField: UseFormResetField<UserInfo>;
+  setValue: UseFormSetValue<UserInfo>;
   watch: UseFormWatch<UserInfo>;
 }
 
@@ -61,6 +71,7 @@ export const AppContext = React.createContext<AppContextType | null>(null);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [loading, setLoading] = useState(0);
   const [anonymousId, setAnonymousId] = useState<string>("");
   const [palapas, setPalapas] = useState<PalapaListing[]>([]);
   const [selectedPalapa, setSelectedPalapa] = useState<PalapaListing | null>(
@@ -82,9 +93,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     "944": "548425",
   };
   const {
+    clearErrors,
     handleSubmit,
     formState: { errors, isSubmitted },
     register,
+    reset,
+    resetField,
+    setValue,
     watch,
   } = useForm<UserInfo>();
 
@@ -93,6 +108,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         anonymousId,
         setAnonymousId,
+        loading,
+        setLoading,
         palapas,
         palapaIdMap,
         setPalapas,
@@ -109,7 +126,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         isSubmitted,
         handleSubmit,
         errors,
+        clearErrors,
         register,
+        reset,
+        resetField,
+        setValue,
         watch,
       }}
     >

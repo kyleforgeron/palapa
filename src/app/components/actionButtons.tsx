@@ -8,6 +8,7 @@ import PalapaList from "./palapaList";
 const ActionButtons = () => {
   const {
     anonymousId,
+    loading,
     isSubmitted,
     errors,
     selectedPalapa,
@@ -21,6 +22,7 @@ const ActionButtons = () => {
     setCheckFieldsResponse,
   } = useContext(AppContext) as AppContextType;
   const submitted = isSubmitted && !Object.keys(errors)?.length;
+  console.log("isSubmitted", isSubmitted, "errors", errors);
   const onClear = () => {
     setSelectedPalapa(null);
     setBookItemResponse("");
@@ -55,11 +57,14 @@ const ActionButtons = () => {
             <ResponseMessage variant="bookItem" />
           </div>
         ) : (
-          <div className="flex flex-col items-start gap-4">
-            <Button variant="getItems" />
-            <PalapaList />
-          </div>
+          loading === 2 && (
+            <div className="flex flex-col items-start gap-4">
+              <Button variant="getItems" />
+              <PalapaList />
+            </div>
+          )
         )}
+        {loading === 1 && <p className="text-lg">Loading...</p>}
       </div>
     </div>
   );

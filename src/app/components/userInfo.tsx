@@ -1,12 +1,40 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext, AppContextType } from "../contexts/appContext";
 
 const UserInfo = () => {
-  const { handleSubmit, isSubmitted, errors, register } = useContext(
-    AppContext
-  ) as AppContextType;
-  const onFormSubmit = handleSubmit((data) => console.log(data));
+  const {
+    handleSubmit,
+    setLoading,
+    isSubmitted,
+    errors,
+    clearErrors,
+    register,
+    reset,
+    resetField,
+  } = useContext(AppContext) as AppContextType;
+  const getSession = async () => {
+    try {
+      setLoading(1);
+      fetch("/api/0-get-session", { method: "POST" }).then((res) => {
+        console.log(res);
+        setLoading(2);
+        res.json().then((data) => {
+          console.log(data);
+          //setPalapas(data.palapas);
+        });
+      });
+    } catch {
+      (error: Error) => {
+        console.log(error);
+        setLoading(0);
+      };
+    }
+  };
+  const onFormSubmit = handleSubmit(async (data) => {
+    console.log(data);
+    getSession();
+  });
   return (
     <form
       className="w-full grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-2"
@@ -34,6 +62,7 @@ const UserInfo = () => {
           type="text"
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="firstName"
+          autoComplete="fname"
           {...register("firstName", { required: true })}
         />
         {errors.firstName && errors.firstName.type === "required" && (
@@ -48,6 +77,7 @@ const UserInfo = () => {
           type="text"
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="lastName"
+          autoComplete="lname"
           {...register("lastName", { required: true })}
         />
         {errors.lastName && errors.lastName.type === "required" && (
@@ -62,6 +92,7 @@ const UserInfo = () => {
           type="email"
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="email"
+          autoComplete="email"
           {...register("email", { required: true })}
         />
         {errors.email && errors.email.type === "required" && (
@@ -76,6 +107,7 @@ const UserInfo = () => {
           type="tel"
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="phone"
+          autoComplete="tel"
           {...register("phone", { required: true })}
         />
         {errors.phone && errors.phone.type === "required" && (
@@ -84,16 +116,33 @@ const UserInfo = () => {
           </span>
         )}
       </div>
-      {!isSubmitted && (
-        <div className="flex-shrink-0 flex-grow-0 mt-1 lg:mt-8">
+      <div className="flex-shrink-0 flex-grow-0 mt-1 lg:mt-8">
+        {
+          !isSubmitted && (
+            <button
+              type="submit"
+              className="bg-blue-800 text-white border border-blue-800 hover:bg-white hover:text-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
+            >
+              Submit
+            </button>
+          ) /* : (
           <button
-            type="submit"
+            type="button"
             className="bg-blue-800 text-white border border-blue-800 hover:bg-white hover:text-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
+            onClick={() => {
+              resetField("roomNumber");
+              resetField("firstName");
+              resetField("lastName");
+              resetField("email");
+              resetField("phone");
+              clearErrors();
+            }}
           >
-            Submit
+            Clear form
           </button>
-        </div>
-      )}
+        )*/
+        }
+      </div>
     </form>
   );
 };
