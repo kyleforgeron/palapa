@@ -79,15 +79,24 @@ export async function POST(req: NextRequest) {
   const today = new Date().toISOString().slice(0, 10);
 
   const upstreamRes = await fetch(
-    `https://marriottarubasurfclub.ipoolside.com/api/palapa/booking/reserve?booking_id=${id}&slot=1&keep_price=1&multi_select=0&reservation_no=&room_number=`, // 548425
+    `https://marriottarubasurfclub.ipoolside.com/api/cart/add-to-cart-palapa/${id}`, // 548425
     {
-      method: "GET",
+      method: "POST",
       headers: {
         // This is often application/json; if DevTools showed text/plain, use that instead.
         "Content-Type": "text/plain;charset=UTF-8",
         Cookie: cookieHeader,
         "X-CSRFToken": csrftoken, // note the casing; Django-style
       },
+      body: JSON.stringify({
+        slot: 1,
+        email: "",
+        name: "",
+        number_chairs: null,
+        fullday_booked: 1,
+        menuitems: null,
+        discount: null,
+      }),
     }
   );
 

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
+import * as Palapas from "./palapas.json";
 import type {
   FieldErrors,
   UseFormClearErrors,
@@ -25,6 +26,10 @@ export type PalapaListing = {
   palapatype_id: number;
   palapatype_name: string;
   short_name: null;
+};
+
+export type PalapaId = {
+  [k: string]: string;
 };
 
 export type UserInfo = {
@@ -85,13 +90,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [bookFromCartResponse, setBookFromCartResponse] = useState<
     string | null
   >("");
-  const palapaIdMap = {
-    "108": "30125",
-    "208": "62975",
-    "308": "95825",
-    "942": "497324",
-    "944": "548425",
-  };
+  const palapaIdMap: PalapaId = {};
+  Palapas.bookings.forEach(
+    (b) => (palapaIdMap[b.palapa_name] = b.id.toString())
+  );
+  console.log(palapaIdMap);
   const {
     clearErrors,
     handleSubmit,
