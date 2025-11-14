@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import * as Palapas from "./palapas.json";
 import type {
@@ -90,11 +90,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [bookFromCartResponse, setBookFromCartResponse] = useState<
     string | null
   >("");
-  const palapaIdMap: PalapaId = {};
-  Palapas.bookings.forEach(
-    (b) => (palapaIdMap[b.palapa_name] = b.id.toString())
-  );
-  console.log(palapaIdMap);
+  const [palapaIdMap, setPalapaIdMap] = useState<PalapaId>({});
+  useEffect(() => {
+    const getPalapas = async () => {
+      try {
+        fetch("/api/-1-get-palapas", { method: "POST" }).then((res) =>
+          res.json().then((data) => {
+            console.log(data);
+            const palapaIds: PalapaId = {};
+            data.bookings.forEach(
+              (b) => (palapaIds[b.palapa_name] = b.id.toString())
+            );
+            console.log(palapaIds);
+            setPalapaIdMap(palapaIds);
+          })
+        );
+      } catch {
+        (error: Error) => console.log(error);
+      }
+    };
+    getPalapas();
+  }, []);
   const {
     clearErrors,
     handleSubmit,
