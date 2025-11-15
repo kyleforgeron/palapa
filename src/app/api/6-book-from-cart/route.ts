@@ -107,7 +107,6 @@ export async function POST(req: NextRequest) {
         terms_accepted: true,
         company_name: "",
         iata_number: "",
-        preference_note: "\t\t\t\t\t\t",
       }),
     }
   );
@@ -127,6 +126,29 @@ export async function POST(req: NextRequest) {
   const data = await upstreamRes.json();
   return NextResponse.json(data);
 }
+
+/*
+      {
+    "email_address": "kyleforgeron4@gmail.com",
+    "full_name": "Tom Torrisi",
+    "last_name": "Torrisi",
+    "first_name": "Tom",
+    "reservation_no": "",
+    "room": "8904",
+    "club_member": "",
+    "club_member_email": "",
+    "orig_reservation_no": "",
+    "phone_no": "6176539447",
+    "country_code": "1",
+    "opt_in_email": false,
+    "opt_in_sms": false,
+    "agree_promo": false,
+    "terms_accepted": true,
+    "company_name": "",
+    "iata_number": "",
+    "preference_note": "",
+}
+    */
 
 /*
 export async function POST(req: Request) {

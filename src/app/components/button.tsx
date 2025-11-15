@@ -49,12 +49,13 @@ const Button = ({ variant }: { variant: string }) => {
         body: JSON.stringify({ id: palapaIdMap[selectedPalapa.name] }),
       }).then((res) =>
         res.json().then((data) => {
-          console.log(data, data.booking, data.message, data.anonymous_id);
+          console.log(data, data.booking, data.message);
           setBookItemResponse(
             !!data.booking
               ? `${selectedPalapa.name} successfully added to cart.`
               : data.message
           );
+          console.log("anon id", data.anonymous_id);
           if (data.anonymous_id) setAnonymousId(data.anonymous_id);
         })
       );
@@ -62,7 +63,27 @@ const Button = ({ variant }: { variant: string }) => {
       (error: Error) => console.log(error);
     }
     try {
-      fetch("/api/3-check-cart", { method: "POST" }).then((res) =>
+      fetch("/api/3-add-to-cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: palapaIdMap[selectedPalapa.name] }),
+      }).then((res) =>
+        res.json().then((data) => {
+          console.log(data, data.booking, data.message);
+          setBookItemResponse(
+            !!data.booking
+              ? `${selectedPalapa.name} successfully added to cart.`
+              : data.message
+          );
+          console.log("anon id", data.anonymous_id);
+          if (data.anonymous_id) setAnonymousId(data.anonymous_id);
+        })
+      );
+    } catch {
+      (error: Error) => console.log(error);
+    }
+    try {
+      fetch("/api/4-check-cart", { method: "POST" }).then((res) =>
         res
           .json()
           .then((data) =>
@@ -75,7 +96,7 @@ const Button = ({ variant }: { variant: string }) => {
       (error: Error) => console.log(error);
     }
     try {
-      fetch("/api/4-check-fields", {
+      fetch("/api/5-check-fields", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ roomNumber: watch("roomNumber") }),
@@ -118,7 +139,7 @@ const Button = ({ variant }: { variant: string }) => {
     console.log("bookFromCart", watch("email"), anonymousId);
     if (!selectedPalapa?.name) return;
     try {
-      fetch("/api/5-book-from-cart", {
+      fetch("/api/6-book-from-cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -130,7 +151,7 @@ const Button = ({ variant }: { variant: string }) => {
           phone: watch("phone").toString(),
         }),
       }).then((res) =>
-        res.json().then((data) => setBookFromCartResponse(JSON.stringify(data)))
+        res.json().then((data) => setBookFromCartResponse(data.message))
       );
     } catch {
       (error: Error) => console.log(error);

@@ -15,6 +15,7 @@ const ActionButtons = () => {
     setSelectedPalapa,
     bookItemResponse,
     setBookItemResponse,
+    bookFromCartResponse,
     setBookFromCartResponse,
     checkCartResponse,
     setCheckCartResponse,
@@ -65,6 +66,14 @@ const ActionButtons = () => {
           )
         )}
         {loading === 1 && <p className="text-lg">Loading...</p>}
+        {!!bookItemResponse && <p className="text-lg">{bookItemResponse}</p>}
+        {!!checkCartResponse && <p className="text-lg">{checkCartResponse}</p>}
+        {!!checkFieldsResponse && (
+          <p className="text-lg">{checkFieldsResponse}</p>
+        )}
+        {!!bookFromCartResponse && (
+          <p className="text-lg">{bookFromCartResponse}</p>
+        )}
       </div>
     </div>
   );

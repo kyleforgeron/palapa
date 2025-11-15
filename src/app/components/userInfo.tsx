@@ -12,6 +12,7 @@ const UserInfo = () => {
     register,
     reset,
     resetField,
+    watch,
   } = useContext(AppContext) as AppContextType;
   const getSession = async () => {
     try {
@@ -19,10 +20,6 @@ const UserInfo = () => {
       fetch("/api/0-get-session", { method: "POST" }).then((res) => {
         console.log(res);
         setLoading(2);
-        res.json().then((data) => {
-          console.log(data);
-          //setPalapas(data.palapas);
-        });
       });
     } catch {
       (error: Error) => {
@@ -34,6 +31,11 @@ const UserInfo = () => {
   const onFormSubmit = handleSubmit(async (data) => {
     console.log(data);
     getSession();
+    localStorage.setItem("roomNumber", data.roomNumber.toString());
+    localStorage.setItem("firstName", data.firstName.toString());
+    localStorage.setItem("lastName", data.lastName.toString());
+    localStorage.setItem("email", data.email.toString());
+    localStorage.setItem("phone", data.phone.toString());
   });
   return (
     <form
@@ -49,6 +51,7 @@ const UserInfo = () => {
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="roomNumber"
           {...register("roomNumber", { required: true })}
+          defaultValue={localStorage.getItem("roomNumber") ?? undefined}
         />
         {errors.roomNumber && errors.roomNumber.type === "required" && (
           <span className="text-red-400">Please provide your room number.</span>
@@ -62,8 +65,9 @@ const UserInfo = () => {
           type="text"
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="firstName"
-          autoComplete="fname"
+          autoComplete="given-name"
           {...register("firstName", { required: true })}
+          defaultValue={localStorage.getItem("firstName") ?? undefined}
         />
         {errors.firstName && errors.firstName.type === "required" && (
           <span className="text-red-400">Please provide your first name.</span>
@@ -77,8 +81,9 @@ const UserInfo = () => {
           type="text"
           className="h-[50px] px-4 bg-white border border-blue-800 rounded"
           id="lastName"
-          autoComplete="lname"
+          autoComplete="family-name"
           {...register("lastName", { required: true })}
+          defaultValue={localStorage.getItem("lastName") ?? undefined}
         />
         {errors.lastName && errors.lastName.type === "required" && (
           <span className="text-red-400">Please provide your last name.</span>
@@ -94,6 +99,7 @@ const UserInfo = () => {
           id="email"
           autoComplete="email"
           {...register("email", { required: true })}
+          defaultValue={localStorage.getItem("email") ?? undefined}
         />
         {errors.email && errors.email.type === "required" && (
           <span className="text-red-400">Please provide your email.</span>
@@ -109,6 +115,7 @@ const UserInfo = () => {
           id="phone"
           autoComplete="tel"
           {...register("phone", { required: true })}
+          defaultValue={localStorage.getItem("phone") ?? undefined}
         />
         {errors.phone && errors.phone.type === "required" && (
           <span className="text-red-400">
