@@ -34,17 +34,7 @@ const ActionButtons = () => {
   if (!submitted) return null;
   return (
     <div className="w-full flex flex-col items-start gap-y-4">
-      <span className="mb-8 lg:mb-16">
-        Thank you for providing your information. We can now proceed with the
-        palapa booking.
-        <button
-          onClick={onClear}
-          className="mt-8 bg-white text-blue-800 hover:bg-blue-800 hover:text-white border border-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
-        >
-          Start Over
-        </button>
-      </span>
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-x-8 w-full items-start">
+      <div className="flex flex-col gap-4 lg:gap-8 w-full items-start">
         {!!selectedPalapa &&
         !!anonymousId &&
         !!bookItemResponse &&
@@ -73,6 +63,14 @@ const ActionButtons = () => {
           <p className="text-lg">{bookFromCartResponse}</p>
         )}
       </div>
+      {!!selectedPalapa && (
+        <button
+          onClick={onClear}
+          className="mt-8 bg-white text-blue-800 hover:bg-blue-800 hover:text-white border border-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
+        >
+          Select a Different Palapa
+        </button>
+      )}
     </div>
   );
 };
