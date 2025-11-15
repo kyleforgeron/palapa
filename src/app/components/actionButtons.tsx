@@ -66,10 +66,8 @@ const ActionButtons = () => {
           )
         )}
         {loading === 1 && <p className="text-lg">Loading...</p>}
-        {!!bookItemResponse && <p className="text-lg">{bookItemResponse}</p>}
-        {!!checkCartResponse && <p className="text-lg">{checkCartResponse}</p>}
-        {!!checkFieldsResponse && (
-          <p className="text-lg">{checkFieldsResponse}</p>
+        {!!bookItemResponse && !bookFromCartResponse && (
+          <p className="text-lg">{bookItemResponse}</p>
         )}
         {!!bookFromCartResponse && (
           <p className="text-lg">{bookFromCartResponse}</p>

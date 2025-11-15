@@ -55,8 +55,6 @@ const Button = ({ variant }: { variant: string }) => {
               ? `${selectedPalapa.name} successfully added to cart.`
               : data.message
           );
-          console.log("anon id", data.anonymous_id);
-          if (data.anonymous_id) setAnonymousId(data.anonymous_id);
         })
       );
     } catch {
@@ -151,7 +149,15 @@ const Button = ({ variant }: { variant: string }) => {
           phone: watch("phone").toString(),
         }),
       }).then((res) =>
-        res.json().then((data) => setBookFromCartResponse(data.message))
+        res.json().then((data) => {
+          if (data.message) {
+            setBookFromCartResponse(data.message);
+          } else {
+            setBookFromCartResponse(
+              `Palapa ${selectedPalapa?.name} booked! Please check your email.`
+            );
+          }
+        })
       );
     } catch {
       (error: Error) => console.log(error);
@@ -182,10 +188,11 @@ const Button = ({ variant }: { variant: string }) => {
           className="bg-blue-800 text-white border border-blue-800 hover:bg-white hover:text-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
           onClick={bookItem}
         >
-          Add Palapa to Cart
+          Add Selected Palapa to Cart
         </button>
       );
-    /*
+      {
+        /*
     case "checkCart":
       return <button onClick={checkCart}>Check Cart Details</button>;
     case "checkFields":
@@ -193,13 +200,14 @@ const Button = ({ variant }: { variant: string }) => {
         <button onClick={checkFields}>Double-Check Reservation Info</button>
       );
     */
+      }
     case "bookFromCart":
       return (
         <button
           className="bg-blue-800 text-white border border-blue-800 hover:bg-white hover:text-blue-800 flex items-center font-semibold px-5 h-[50px] rounded-lg"
           onClick={bookFromCart}
         >
-          Book From Cart
+          Book Selected Palapa
         </button>
       );
     default:

@@ -28,6 +28,11 @@ export type PalapaListing = {
   short_name: null;
 };
 
+export type Booking = {
+  id: number;
+  palapa_name: string;
+};
+
 export type PalapaId = {
   [k: string]: string;
 };
@@ -99,7 +104,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
             console.log(data);
             const palapaIds: PalapaId = {};
             data.bookings.forEach(
-              (b) => (palapaIds[b.palapa_name] = b.id.toString())
+              (b: Booking) => (palapaIds[b.palapa_name] = b.id.toString())
             );
             console.log(palapaIds);
             setPalapaIdMap(palapaIds);
@@ -109,8 +114,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         (error: Error) => console.log(error);
       }
     };
-    getPalapas();
-  }, []);
+    if (loading === 2) getPalapas();
+  }, [loading]);
   const {
     clearErrors,
     handleSubmit,
