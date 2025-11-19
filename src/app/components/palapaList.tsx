@@ -10,7 +10,7 @@ const PalapaList = () => {
   return (
     <div className="flex flex-col w-full max-w-5xl">
       <div className="flex w-full mb-4">
-        Please select one of these available palapas:
+        Please select one of these palapas for tomorrow:
       </div>
       <section className="flex flex-row flex-wrap gap-2 w-full items-start justify-start">
         {palapas

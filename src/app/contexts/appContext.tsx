@@ -30,6 +30,8 @@ export type PalapaListing = {
 
 export type Booking = {
   id: number;
+  advanced_booking_time: string;
+  palapatype_name: string;
   palapa_name: string;
 };
 
@@ -65,6 +67,8 @@ export interface AppContextType {
   setCheckFieldsResponse: (arg0: string | null) => void;
   bookFromCartResponse: string | null;
   setBookFromCartResponse: (arg0: string | null) => void;
+  success: boolean;
+  setSuccess: (arg0: boolean) => void;
   isSubmitted: boolean;
   handleSubmit: UseFormHandleSubmit<UserInfo, undefined>;
   errors: FieldErrors<UserInfo>;
@@ -95,6 +99,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [bookFromCartResponse, setBookFromCartResponse] = useState<
     string | null
   >("");
+  const [success, setSuccess] = useState(false);
   const [palapaIdMap, setPalapaIdMap] = useState<PalapaId>({});
   useEffect(() => {
     const getPalapas = async () => {
@@ -103,9 +108,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
           res.json().then((data) => {
             console.log(data);
             const palapaIds: PalapaId = {};
-            data.bookings.forEach(
-              (b: Booking) => (palapaIds[b.palapa_name] = b.id.toString())
-            );
+            data.bookings.forEach((b: Booking) => {
+              if (
+                b.advanced_booking_time === "17:30" &&
+                b.palapatype_name.includes("Next day reservation") &&
+                ["1", "2", "3"].includes(b.palapa_name[0]) &&
+                ["6", "7", "8"].includes(b.palapa_name[2])
+              ) {
+                palapaIds[b.palapa_name] = b.id.toString();
+              }
+            });
             console.log(palapaIds);
             setPalapaIdMap(palapaIds);
           })
@@ -147,6 +159,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         setCheckFieldsResponse,
         bookFromCartResponse,
         setBookFromCartResponse,
+        success,
+        setSuccess,
         isSubmitted,
         handleSubmit,
         errors,
