@@ -53,7 +53,6 @@ const ActionButtons = () => {
           ) : (
             !!selectedPalapa && (
               <div className="flex flex-col items-start gap-4">
-                <span>Selected Palapa: {selectedPalapa?.name}</span>
                 <Button variant="bookItem" />
                 {/*<ResponseMessage variant="bookItem" />*/}
               </div>
